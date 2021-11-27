@@ -1,18 +1,12 @@
 package pt.iscte_iul.ProjetoES_;
 
 import java.util.List;
-
 import org.trello4j.Trello;
 import org.trello4j.TrelloImpl;
 import org.trello4j.model.Board;
 import org.trello4j.model.Card;
+import org.trello4j.model.Member;
 
-
-
-/**
- * Hello world!
- *
- */
 public class App {
 	
     public static void main( String[] args ){ 	   
@@ -22,16 +16,22 @@ public class App {
         String nome_utilizador = "pedroduartecarrondoarsenio";
         List<Board> boards = trelloApi.getBoardsByMember(nome_utilizador);
         Board board = boards.get(0);
+        String boardID = board.getId();
+        List <Member> boardMembers = trelloApi.getMembersByBoard(boardID);
         String IdOrg = board.getIdOrganization();
         System.out.println("Nome do Projeto: "+ trelloApi.getOrganization(IdOrg).getDisplayName());
-        List<Card> cards;
-        	System.out.println("Nome do Board: "+ board.getName());
-        	cards = trelloApi.getCardsByMember(nome_utilizador);
-        	List<org.trello4j.model.List> list=trelloApi.getListByBoard(board.getId());
-        	//System.out.println(cards);
-        	System.out.println("Lista dos Cards:");
-        	for(org.trello4j.model.List lista: list) {
-        		System.out.println("\t"+lista.getName());
-        	}
+        List<Card> cards; 
+        System.out.println("Nome do Board: "+ board.getName());
+        cards = trelloApi.getCardsByMember(nome_utilizador);
+        List<org.trello4j.model.List> list=trelloApi.getListByBoard(board.getId());
+        //System.out.println(cards);
+        System.out.println("Lista dos Cards:");
+        for(org.trello4j.model.List lista : list) {
+        	System.out.println("\t"+lista.getName());
+        }
+        System.out.println("Membros do Projeto:");
+        for(Member membro : boardMembers) {
+        	System.out.println("\t"+membro.getUsername());
+        }
     }
 }
