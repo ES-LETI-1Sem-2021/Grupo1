@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.trello4j.Trello;
 import org.trello4j.TrelloImpl;
 import org.trello4j.model.Board;
-//import org.trello4j.model.Card;
+import org.trello4j.model.Card;
 import org.trello4j.model.Member;
 
 public class TrelloMethods {
@@ -17,22 +17,44 @@ public class TrelloMethods {
 	List<Board> boards = trelloApi.getBoardsByMember(nome_utilizador);
 	Board board = boards.get(0);
 	String boardID = board.getId();
+	List<org.trello4j.model.List> lists = trelloApi.getListByBoard(boardID);
 	
 	public String getProjectID() {
         String IdOrg = board.getIdOrganization();
         return trelloApi.getOrganization(IdOrg).getDisplayName();
 	}
 	
-	public List <String> getMembers() {
+	public List<String> getProjectMembers() {
 		List<String> memberNames = new ArrayList<String>(); 
-		List <Member> memberIDList = trelloApi.getMembersByBoard(boardID);
+		List<Member> memberIDList = trelloApi.getMembersByBoard(boardID);
 		for (int i = 0; i < memberIDList.size(); i++) {
 			memberNames.add(memberIDList.get(i).getUsername());
 		}
         return memberNames;
 	}
+	
+	//public Card getProjectStartDate() {
+		//return trelloApi.getCardsByList(lists.get(0).getId()).get(0);
+		// ainda por fazer!
+	//}
+	
+	public List<String> getMeetingDescriptions() {
+		List<String> meetingsDesc = new ArrayList<String>();
+		String meetingsListID = null;
+        for (org.trello4j.model.List list : lists) {
+        	if (list.getName().contentEquals("Sprint Planning / Review / Retrospective")) {
+        		meetingsListID = list.getId();
+        	}
+        }
+        List<Card> meetingCards = trelloApi.getCardsByList(meetingsListID);
+        for (int i = 0; i < meetingCards.size(); i++) {
+        	Card currentCard = meetingCards.get(i);
+        	meetingsDesc.add(currentCard.getName() + ":\n" + currentCard.getDesc());
+        }
+        return meetingsDesc;
+	}
         
-    /**public void uselessForNow() {
+    /*public void uselessForNow() {
      *  //get cards
         List<Card> cards = trelloApi.getCardsByMember(nome_utilizador);
         System.out.println("Nome do Board: "+ board.getName());
