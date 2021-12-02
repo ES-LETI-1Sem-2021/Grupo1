@@ -13,6 +13,8 @@ public class Main {
         	System.out.println(names);
         }
 		
+		System.out.println("\t" + trello.getProjectStartDate());
+		
 		for(String desc : trello.getMeetingDescriptions()) {
         	System.out.println("\t" + desc);
         }

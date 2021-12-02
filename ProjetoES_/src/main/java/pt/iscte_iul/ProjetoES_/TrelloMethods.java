@@ -1,12 +1,15 @@
 package pt.iscte_iul.ProjetoES_;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
 import org.trello4j.Trello;
 import org.trello4j.TrelloImpl;
 import org.trello4j.model.Board;
 import org.trello4j.model.Card;
 import org.trello4j.model.Member;
+import org.trello4j.model.Action;
 
 public class TrelloMethods {
 	
@@ -17,11 +20,12 @@ public class TrelloMethods {
 	List<Board> boards = trelloApi.getBoardsByMember(nome_utilizador);
 	Board board = boards.get(0);
 	String boardID = board.getId();
+	String orgID = board.getIdOrganization();
 	List<org.trello4j.model.List> lists = trelloApi.getListByBoard(boardID);
 	
+	
 	public String getProjectID() {
-        String IdOrg = board.getIdOrganization();
-        return trelloApi.getOrganization(IdOrg).getDisplayName();
+        return trelloApi.getOrganization(orgID).getDisplayName();
 	}
 	
 	public List<String> getProjectMembers() {
@@ -33,10 +37,15 @@ public class TrelloMethods {
         return memberNames;
 	}
 	
-	//public Card getProjectStartDate() {
-		//return trelloApi.getCardsByList(lists.get(0).getId()).get(0);
-		// ainda por fazer!
-	//}
+	public Date getProjectStartDate() {
+		List<Date> dates = new ArrayList<Date>();
+		List<Action> allActions = trelloApi.getActionsByOrganization(orgID);
+		for (Action action : allActions) {
+			dates.add(action.getDate());
+		}
+		dates.remove(0);
+		return Collections.min(dates);
+	}
 	
 	public List<String> getMeetingDescriptions() {
 		List<String> meetingsDesc = new ArrayList<String>();
