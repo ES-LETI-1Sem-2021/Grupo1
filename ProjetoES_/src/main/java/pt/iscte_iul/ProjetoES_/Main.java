@@ -16,6 +16,11 @@ public class Main {
 		for(String desc : trello.getMeetingDescriptions()) {
         	System.out.println("\t" + desc);
         }
+		
+		System.out.println("\tItems em cada Sprint:");
+		for(String items : trello.getItemsDoneEachSprint()) {
+        	System.out.println(items);
+        }
 	}
 	
 }

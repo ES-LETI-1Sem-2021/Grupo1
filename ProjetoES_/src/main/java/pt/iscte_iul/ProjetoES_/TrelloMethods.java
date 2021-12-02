@@ -53,18 +53,26 @@ public class TrelloMethods {
         }
         return meetingsDesc;
 	}
-        
-    /*public void uselessForNow() {
-     *  //get cards
-        List<Card> cards = trelloApi.getCardsByMember(nome_utilizador);
-        System.out.println("Nome do Board: "+ board.getName());
-        List<org.trello4j.model.List> list=trelloApi.getListByBoard(board.getId());
-        System.out.println(cards);
-        System.out.println("Lista dos Cards:");
-        for(org.trello4j.model.List lista : list) {
-        	System.out.println("\t"+lista.getName());
+	
+	public List<String> getItemsDoneEachSprint() {
+		List<String> itemsSprint = new ArrayList<String>();
+		String doneListID = null;
+		for (org.trello4j.model.List list : lists) {
+        	if (list.getName().contentEquals("Done")) {
+        		doneListID = list.getId();
+        	}	
         }
-      
+		List<Card> doneCards = trelloApi.getCardsByList(doneListID);
+		for (int i = 0; i < doneCards.size(); i++) {
+			Card card = doneCards.get(i);
+			for (int y = 0; y < card.getLabels().size(); y++) {
+				String labelName = card.getLabels().get(y).getName();
+				if (labelName.contains("Sprint")) {
+					itemsSprint.add(card.getName() + " -> " + labelName);
+				}
+			}
+		}
+		return itemsSprint;
 	}
-	*/
+		
 }
