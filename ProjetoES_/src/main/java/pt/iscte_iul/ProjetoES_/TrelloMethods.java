@@ -13,15 +13,15 @@ import org.trello4j.model.Action;
 
 public class TrelloMethods {
 	
-	String trelloKey = "03a00a367901cc8e2cbd3a2e6270413c";
-	String trelloAcessToken = "6e472de0607c15ac4429f146b7eee03ab057ca592890a435443a72a613e42b2e";
-	String nome_utilizador = "pedroduartecarrondoarsenio";
-	Trello trelloApi = new TrelloImpl(trelloKey,trelloAcessToken);
-	List<Board> boards = trelloApi.getBoardsByMember(nome_utilizador);
-	Board board = boards.get(0);
-	String boardID = board.getId();
-	String orgID = board.getIdOrganization();
-	List<org.trello4j.model.List> lists = trelloApi.getListByBoard(boardID);
+	private String trelloKey = "03a00a367901cc8e2cbd3a2e6270413c";
+	private String trelloAcessToken = "6e472de0607c15ac4429f146b7eee03ab057ca592890a435443a72a613e42b2e";
+	private String nome_utilizador = "pedroduartecarrondoarsenio";
+	private Trello trelloApi = new TrelloImpl(trelloKey,trelloAcessToken);
+	private List<Board> boards = trelloApi.getBoardsByMember(nome_utilizador);
+	private Board board = boards.get(0);
+	private String boardID = board.getId();
+	private String orgID = board.getIdOrganization();
+	private List<org.trello4j.model.List> lists = trelloApi.getListByBoard(boardID);
 	
 	
 	public String getProjectID() {
