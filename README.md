@@ -1,7 +1,7 @@
-#ES-LETI-1Sem-2021-Grupo1
+# ES-LETI-1Sem-2021-Grupo1
 
-#Group Members:
-- Pedro ArsÈnio - 92891
+## Group Members:
+- Pedro Ars√©nio - 92891
 - Margarida Neves - 92768
-- Jo„o Ferreira - 93903
+- Jo√£o Ferreira - 93903
 - Ana Raposo - 93003
