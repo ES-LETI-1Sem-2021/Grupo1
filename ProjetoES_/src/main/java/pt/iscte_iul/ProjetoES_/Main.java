@@ -2,8 +2,12 @@ package pt.iscte_iul.ProjetoES_;
 import java.io.IOException;
 
 public class Main {
+	
+	private static GUI gui;
 
 	public static void main(String[] args) throws IOException {
+		
+		gui.createAndShowGUI();
 		
 		TrelloMethods trello = new TrelloMethods();
 		GithubMethods github = new GithubMethods();
