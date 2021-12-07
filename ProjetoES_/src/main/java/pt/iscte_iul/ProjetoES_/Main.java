@@ -3,10 +3,12 @@ import java.io.IOException;
 
 public class Main {
 	
-	private static GUI gui;
+	
 
 	public static void main(String[] args) throws IOException {
-		
+		GUI gui = new GUI();
+    
+		gui.projectName("insert project name", "elementos");
 		gui.createAndShowGUI();
 		
 		TrelloMethods trello = new TrelloMethods();
