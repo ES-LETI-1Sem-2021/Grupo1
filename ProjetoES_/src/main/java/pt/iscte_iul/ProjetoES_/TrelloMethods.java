@@ -4,12 +4,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
+
+import org.kohsuke.github.GHArtifact;
 import org.trello4j.Trello;
 import org.trello4j.TrelloImpl;
 import org.trello4j.model.Board;
 import org.trello4j.model.Card;
 import org.trello4j.model.Member;
 import org.trello4j.model.Action;
+
+/**
+ * Class containing the methods that interact with Trello
+ */
 
 public class TrelloMethods {
 	
@@ -23,10 +29,19 @@ public class TrelloMethods {
 	private String orgID = board.getIdOrganization();
 	private List<org.trello4j.model.List> lists = trelloApi.getListByBoard(boardID);
 	
+	/**
+	 * Gets trello workspace name
+	 * @return Project name
+	 */
 	
 	public String getProjectID() {
         return trelloApi.getOrganization(orgID).getDisplayName();
 	}
+	
+	/**
+	 * Gets trello project member usernames
+	 * @return List of project members
+	 */
 	
 	public List<String> getProjectMembers() {
 		List<String> memberNames = new ArrayList<String>(); 
@@ -36,6 +51,11 @@ public class TrelloMethods {
 		}
         return memberNames;
 	}
+	
+	/**
+	 * Gets date in which trello project was created
+	 * @return Date of project creation
+	 */
 	
 	public Date getProjectStartDate() {
 		List<Date> dates = new ArrayList<Date>();
@@ -47,15 +67,15 @@ public class TrelloMethods {
 		return Collections.min(dates);
 	}
 	
+	/**
+	 * Gets a list with all meetings name and descriptions
+	 * @return List of descriptions
+	 */
+	
 	public List<String> getMeetingDescriptions() {
 		List<String> meetingsDesc = new ArrayList<String>();
-		String meetingsListID = null;
-        for (org.trello4j.model.List list : lists) {
-        	if (list.getName().contentEquals("Sprint Planning / Review / Retrospective")) {
-        		meetingsListID = list.getId();
-        	}
-        }
-        List<Card> meetingCards = trelloApi.getCardsByList(meetingsListID);
+		String meetingsListID = meetingsListID();
+		List<Card> meetingCards = trelloApi.getCardsByList(meetingsListID);
         for (int i = 0; i < meetingCards.size(); i++) {
         	Card currentCard = meetingCards.get(i);
         	meetingsDesc.add(currentCard.getName() + ":\n" + currentCard.getDesc());
@@ -63,14 +83,29 @@ public class TrelloMethods {
         return meetingsDesc;
 	}
 	
+	/**
+	 * Gets the meeting list ID
+	 * @return ID of meetings list 
+	 */
+
+	private String meetingsListID() {
+		String meetingsListID = null;
+		for (org.trello4j.model.List list : lists) {
+			if (list.getName().contentEquals("Sprint Planning / Review / Retrospective")) {
+				meetingsListID = list.getId();
+			}
+		}
+		return meetingsListID;
+	}
+	
+	/**
+	 * Gets a list of done card titles followed by the sprint they were completed on
+	 * @return List of card name and respective sprint 
+	 */
+	
 	public List<String> getItemsDoneEachSprint() {
 		List<String> itemsSprint = new ArrayList<String>();
-		String doneListID = null;
-		for (org.trello4j.model.List list : lists) {
-        	if (list.getName().contentEquals("Done")) {
-        		doneListID = list.getId();
-        	}	
-        }
+		String doneListID = doneListID("Done");
 		List<Card> doneCards = trelloApi.getCardsByList(doneListID);
 		for (int i = 0; i < doneCards.size(); i++) {
 			Card card = doneCards.get(i);
@@ -83,5 +118,95 @@ public class TrelloMethods {
 		}
 		return itemsSprint;
 	}
+	
+	/**
+	 * Gets the done list ID
+	 * @return ID of done list
+	 */
+
+	private String doneListID(String name) {
+		String doneListID = null;
+		for (org.trello4j.model.List list : lists) {
+			if (list.getName().contentEquals(name)) {
+				doneListID = list.getId();
+			}
+		}
+		return doneListID;
+	}
+	
+	/**
+	 * Gets date of start and end of sprints
+	 * @return List of start and end of all sprints
+	 */
+	
+	public List<String> getSprintsDates() {
+		List<String> itemsSprint = new ArrayList<String>();
+		String doneListID = doneListID("Sprint");
+		String nameComplete=null;
+		String dateOfSprint=null;
+		String numberOfSprint=null;
+		List<Card> doneCards = trelloApi.getCardsByList(doneListID);
+		for (int i = 0; i < doneCards.size(); i++) {
+			dateOfSprint = dateOfSprint(nameComplete, dateOfSprint, doneCards, i);
+			numberOfSprint = numberOfSprint(nameComplete, numberOfSprint, doneCards, i);
+			nameComplete = nameComplete(nameComplete, doneCards, i);
+			itemsSprint.add(numberOfSprint+"->"+dateOfSprint);
+		}
+		return itemsSprint;
+	}
+
+	private String numberOfSprint(String nameComplete, String numberOfSprint, List<Card> doneCards, int i) {
+		nameComplete = nameComplete(nameComplete, doneCards, i);
+		numberOfSprint = nameComplete.substring(0, nameComplete.indexOf(":"));
+		return numberOfSprint;
+	}
+
+	private String dateOfSprint(String nameComplete, String dateOfSprint, List<Card> doneCards, int i) {
+		nameComplete = nameComplete(nameComplete, doneCards, i);
+		dateOfSprint = nameComplete.substring(nameComplete.indexOf(":") + 1);
+		return dateOfSprint;
+	}
+
+	private String nameComplete(String nameComplete, List<Card> doneCards, int i) {
+		Card card = doneCards.get(i);
+		nameComplete = card.getName();
+		return nameComplete;
+	}
+	public void getHourOfWork() {
+		List<Action> actionsOfCard=new ArrayList<Action>();
+		List<Card>allCards=trelloApi.getCardsByBoard(boardID);
+		boolean isActionCreator;
+		boolean isCommentCard;
+		int hoursSpent;
+		String a=null;
+		String[] acuted;
+		for(Card card : allCards) { 
+		actionsOfCard = actionsOfCard(actionsOfCard, card);
+		if(card.getName().contentEquals("Establecer ligação com o Trello")) {
+			for(Action action : actionsOfCard) {
+				a=action.getMemberCreator().getUsername()+" -> "+action.getData().getText();
+			//	System.out.println(a);
+				if(a.contains("plus!")) {
+					//System.out.println(a);
+					acuted=a.split(" ");
+					if(acuted.length==4) {
+						System.out.println(a);
+						
+					}
+				}
+			}
+		}	
+		}
+	}
+
+	private List<Action> actionsOfCard(List<Action> actionsOfCard, Card card) {
+		if (card.getName().contentEquals("Establecer ligação com o Trello")) {
+			actionsOfCard = trelloApi.getActionsByCard(card.getId());
+		}
+		return actionsOfCard;
+	}
+	
+
+	
 		
 }

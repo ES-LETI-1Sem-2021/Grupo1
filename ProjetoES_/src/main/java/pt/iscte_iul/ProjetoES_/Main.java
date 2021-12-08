@@ -9,7 +9,7 @@ public class Main {
 		GUI gui = new GUI();
     
 		gui.projectName("insert project name", "elementos");
-		gui.createAndShowGUI();
+		//gui.createAndShowGUI();
 		
 		TrelloMethods trello = new TrelloMethods();
 		GithubMethods github = new GithubMethods();
