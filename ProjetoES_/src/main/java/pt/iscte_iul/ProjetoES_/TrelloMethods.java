@@ -163,42 +163,5 @@ public class TrelloMethods {
 		System.out.println("nameComplete: " + nameComplete);
 		return nameComplete;
 	}
-	
-	public void getHourOfWork() {
-		List<Action> actionsOfCard=new ArrayList<Action>();
-		List<Card>allCards=trelloApi.getCardsByBoard(boardID);
-		boolean isActionCreator;
-		boolean isCommentCard;
-		int hoursSpent;
-		String a=null;
-		String[] acuted;
-		for(Card card : allCards) { 
-		actionsOfCard = actionsOfCard(actionsOfCard, card);
-		if(card.getName().contentEquals("Establecer ligação com o Trello")) {
-			for(Action action : actionsOfCard) {
-				a=action.getMemberCreator().getUsername()+" -> "+action.getData().getText();
-			//	System.out.println(a);
-				if(a.contains("plus!")) {
-					//System.out.println(a);
-					acuted=a.split(" ");
-					if(acuted.length==4) {
-						System.out.println(a);
-						
-					}
-				}
-			}
-		}	
-		}
-	}
-
-	private List<Action> actionsOfCard(List<Action> actionsOfCard, Card card) {
-		if (card.getName().contentEquals("Establecer ligação com o Trello")) {
-			actionsOfCard = trelloApi.getActionsByCard(card.getId());
-		}
-		return actionsOfCard;
-	}
-	
-
-	
 		
 }

@@ -4,7 +4,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
-import org.kohsuke.github.*;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHTag;
+import org.kohsuke.github.GitHub;
 
 /**
  * Class containing the methods that interact with GitHub.
@@ -22,7 +24,7 @@ public class GithubMethods {
 	 */
 
 	public GithubMethods() throws IOException {
-		githubKey = "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";
+		githubKey = "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";
 		github = GitHub.connectUsingOAuth(githubKey);
 		repo = github.getRepository("PedroArsenio33/ES-LETI-1Sem-2021-Grupo1");
 	}
