@@ -22,7 +22,7 @@ public class GithubMethods {
 	 */
 
 	public GithubMethods() throws IOException {
-		githubKey = "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";
+		githubKey = "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";
 		github = GitHub.connectUsingOAuth(githubKey);
 		repo = github.getRepository("PedroArsenio33/ES-LETI-1Sem-2021-Grupo1");
 	}
