@@ -7,7 +7,7 @@ import org.apache.commons.io.IOUtils;
 import org.kohsuke.github.*;
 
 /**
- * Class containing the methods that interact with GitHub
+ * Class containing the methods that interact with GitHub.
  */ 
 
 public class GithubMethods {
@@ -17,18 +17,18 @@ public class GithubMethods {
 	private GHRepository repo;
 
 	/**
-	 * Builds the necessary GitHub variables
+	 * Builds the necessary GitHub variables.
 	 * @throws java.io.IOException Throws IOException
 	 */
 
 	public GithubMethods() throws IOException {
-		githubKey = "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";
+		githubKey = "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";
 		github = GitHub.connectUsingOAuth(githubKey);
 		repo = github.getRepository("PedroArsenio33/ES-LETI-1Sem-2021-Grupo1");
 	}
 
 	/**
-	 * Gets README.md from GitHub repository
+	 * Gets README.md from GitHub repository.
 	 * @return README.md file content
 	 * @throws java.io.IOException Throws IOException
 	 */
@@ -38,7 +38,7 @@ public class GithubMethods {
 	}
 
 	/**
-	 * Gets tags associated with GitHub repository
+	 * Gets tags associated with GitHub repository.
 	 * @return List of tags
 	 * @throws java.io.IOException Throws IOException
 	 */

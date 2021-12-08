@@ -11,13 +11,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.*;
 
+/**
+ * Class for testing methods that interact with Trello.
+ */
+
 public class GithubMethodsTest {
 	
-	GithubMethods github = null;
+	GithubMethods github = new GithubMethods();
+	
+	public GithubMethodsTest() throws IOException {
+	}
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		GithubMethods github = new GithubMethods();
 	}
 
 	@AfterClass
@@ -34,7 +40,9 @@ public class GithubMethodsTest {
 
 	@Test
 	public void test() throws Exception {
-		Assert.assertNull(github);
+		Assert.assertNotNull(github);
+		Assert.assertNotNull(github.getReadme());
+		Assert.assertNotNull(github.getTags());
 	}
 
 }

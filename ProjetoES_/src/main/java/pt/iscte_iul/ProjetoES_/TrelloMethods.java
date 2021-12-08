@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
-
-import org.kohsuke.github.GHArtifact;
 import org.trello4j.Trello;
 import org.trello4j.TrelloImpl;
 import org.trello4j.model.Board;
@@ -14,7 +12,7 @@ import org.trello4j.model.Member;
 import org.trello4j.model.Action;
 
 /**
- * Class containing the methods that interact with Trello
+ * Class containing the methods that interact with Trello.
  */
 
 public class TrelloMethods {
@@ -30,8 +28,8 @@ public class TrelloMethods {
 	private List<org.trello4j.model.List> lists = trelloApi.getListByBoard(boardID);
 	
 	/**
-	 * Gets trello workspace name
-	 * @return Project name
+	 * Gets trello workspace name.
+	 * @return project name
 	 */
 	
 	public String getProjectID() {
@@ -39,8 +37,8 @@ public class TrelloMethods {
 	}
 	
 	/**
-	 * Gets trello project member usernames
-	 * @return List of project members
+	 * Gets trello project member usernames.
+	 * @return list of project members
 	 */
 	
 	public List<String> getProjectMembers() {
@@ -53,8 +51,8 @@ public class TrelloMethods {
 	}
 	
 	/**
-	 * Gets date in which trello project was created
-	 * @return Date of project creation
+	 * Gets date in which trello project was created.
+	 * @return date of project creation
 	 */
 	
 	public Date getProjectStartDate() {
@@ -68,8 +66,8 @@ public class TrelloMethods {
 	}
 	
 	/**
-	 * Gets a list with all meetings name and descriptions
-	 * @return List of descriptions
+	 * Gets a list with all meetings name and descriptions.
+	 * @return list of descriptions
 	 */
 	
 	public List<String> getMeetingDescriptions() {
@@ -82,11 +80,6 @@ public class TrelloMethods {
         }
         return meetingsDesc;
 	}
-	
-	/**
-	 * Gets the meeting list ID
-	 * @return ID of meetings list 
-	 */
 
 	private String meetingsListID() {
 		String meetingsListID = null;
@@ -99,8 +92,8 @@ public class TrelloMethods {
 	}
 	
 	/**
-	 * Gets a list of done card titles followed by the sprint they were completed on
-	 * @return List of card name and respective sprint 
+	 * Gets a list of done card titles followed by the sprint they were completed on.
+	 * @return list of card name and respective sprint 
 	 */
 	
 	public List<String> getItemsDoneEachSprint() {
@@ -118,11 +111,6 @@ public class TrelloMethods {
 		}
 		return itemsSprint;
 	}
-	
-	/**
-	 * Gets the done list ID
-	 * @return ID of done list
-	 */
 
 	private String doneListID(String name) {
 		String doneListID = null;
@@ -135,8 +123,8 @@ public class TrelloMethods {
 	}
 	
 	/**
-	 * Gets date of start and end of sprints
-	 * @return List of start and end of all sprints
+	 * Gets date of start and end of sprints.
+	 * @return list of start and end of all sprints
 	 */
 	
 	public List<String> getSprintsDates() {
@@ -158,20 +146,24 @@ public class TrelloMethods {
 	private String numberOfSprint(String nameComplete, String numberOfSprint, List<Card> doneCards, int i) {
 		nameComplete = nameComplete(nameComplete, doneCards, i);
 		numberOfSprint = nameComplete.substring(0, nameComplete.indexOf(":"));
+		System.out.println("numberOfSprint: " + numberOfSprint);
 		return numberOfSprint;
 	}
 
 	private String dateOfSprint(String nameComplete, String dateOfSprint, List<Card> doneCards, int i) {
 		nameComplete = nameComplete(nameComplete, doneCards, i);
 		dateOfSprint = nameComplete.substring(nameComplete.indexOf(":") + 1);
+		System.out.println("dateOfSprint: " + dateOfSprint);
 		return dateOfSprint;
 	}
-
+	
 	private String nameComplete(String nameComplete, List<Card> doneCards, int i) {
 		Card card = doneCards.get(i);
 		nameComplete = card.getName();
+		System.out.println("nameComplete: " + nameComplete);
 		return nameComplete;
 	}
+	
 	public void getHourOfWork() {
 		List<Action> actionsOfCard=new ArrayList<Action>();
 		List<Card>allCards=trelloApi.getCardsByBoard(boardID);
